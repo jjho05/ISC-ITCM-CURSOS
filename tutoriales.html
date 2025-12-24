@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Tutoriales - ISC ITCM</title>
+    <meta name="description"
+        content="Tutoriales técnicos para desarrolladores: Git, Docker, React, Python y más. Aprende con videos organizados por tema.">
+    <link href="https://www.cdmadero.tecnm.mx/images/favicon.png" rel="icon" type="image/png" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+        :root {
+            --primary-color: #10b981;
+            --secondary-color: #059669;
+            --accent-color: #f0f2f4;
+            --text-primary: #000000;
+            --text-secondary: #807F83;
+        }
+        body { font-family: "Noto Sans", sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: "Montserrat", sans-serif; font-weight: 700; }
+        
+        .tutorial-card {
+            @apply bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden transition-all duration-300 cursor-pointer;
+        }
+        .tutorial-card:hover {
+            @apply shadow-xl -translate-y-2 border-[var(--primary-color)];
+        }
+        .filter-btn {
+            @apply px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 border-2;
+        }
+        .filter-btn.active {
+            @apply bg-[var(--primary-color)] text-white border-[var(--primary-color)] scale-105;
+        }
+        .filter-btn:not(.active) {
+            @apply bg-white text-[var(--secondary-color)] border-gray-300 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)];
+        }
+        .cat-badge {
+            @apply inline-block px-3 py-1 rounded-full text-xs font-semibold;
+        }
+        .cat-programacion { @apply bg-blue-100 text-blue-800; }
+        .cat-devops { @apply bg-purple-100 text-purple-800; }
+        .cat-web { @apply bg-green-100 text-green-800; }
+        .cat-datos { @apply bg-orange-100 text-orange-800; }
+        .cat-herramientas { @apply bg-pink-100 text-pink-800; }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="relative flex size-full min-h-screen flex-col">
+        <!-- Header -->
+        <header class="bg-[var(--primary-color)] text-white shadow-lg sticky top-0 z-50">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <img src="https://www.cdmadero.tecnm.mx/images/logo-itcm-v2.png" alt="ITCM" class="h-12">
+                        <div>
+                            <h1 class="text-xl font-bold">Tutoriales Técnicos</h1>
+                            <p class="text-sm text-gray-200">Aprende herramientas y tecnologías</p>
+                        </div>
+                    </div>
+                    <a href="index.html"
+                        class="px-4 py-2 bg-white text-[var(--primary-color)] rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        ← Inicio
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1">
+            <div class="container mx-auto px-4 py-8">
+                <!-- Search and Filters -->
+                <div class="mb-8">
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                        <!-- Search -->
+                        <div class="mb-6">
+                            <label for="searchInput" class="block text-sm font-semibold text-gray-700 mb-2">Buscar
+                                tutorial</label>
+                            <div class="relative">
+                                <input type="text" id="searchInput" placeholder="Busca por nombre o tecnología..."
+                                    class="w-full px-4 py-3 pl-12 border-2 border-gray-300 rounded-lg focus:border-[var(--primary-color)] focus:outline-none">
+                                <svg class="absolute left-4 top-3.5 w-5 h-5 text-gray-400" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Filtrar por Categoría</label>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="filter-btn active" data-filter="categoria"
+                                    data-value="todos">Todos</button>
+                                <button class="filter-btn" data-filter="categoria"
+                                    data-value="Programación">Programación</button>
+                                <button class="filter-btn" data-filter="categoria" data-value="DevOps">DevOps</button>
+                                <button class="filter-btn" data-filter="categoria" data-value="Web">Desarrollo
+                                    Web</button>
+                                <button class="filter-btn" data-filter="categoria" data-value="Datos">Datos</button>
+                                <button class="filter-btn" data-filter="categoria"
+                                    data-value="Herramientas">Herramientas</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-sm text-gray-600">
+                        <p id="resultsCount" class="font-semibold"></p>
+                        <button id="clearFilters"
+                            class="text-[var(--primary-color)] hover:underline font-semibold">Limpiar filtros</button>
+                    </div>
+                </div>
+
+                <!-- Tutorials Grid -->
+                <div id="tutorialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                </div>
+
+                <!-- No Results -->
+                <div id="noResults" class="hidden text-center py-16">
+                    <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
+                    </svg>
+                    <h3 class="text-xl font-bold text-gray-600 mb-2">No se encontraron tutoriales</h3>
+                    <p class="text-gray-500">Intenta con otros filtros o términos de búsqueda</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-[var(--secondary-color)] text-white py-6 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-sm">© 2025 Instituto Tecnológico de Ciudad Madero - ISC</p>
+                <p class="text-xs mt-2 text-gray-300">Tutoriales Técnicos - Material educativo de apoyo</p>
+                <p class="text-xs mt-3 text-gray-400">Creado por <span class="font-semibold text-white">Jesús
+                        Olvera</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const tutoriales = [
+            { nombre: "Monday.com", categoria: "Herramientas", nivel: "Básico", temas: 1, link: "tutoriales/monday.html", icono: "📊" },
+            { nombre: "Git y GitHub", categoria: "Herramientas", nivel: "Básico", temas: 10, link: "tutoriales/git.html", icono: "🔀" },
+            { nombre: "Docker", categoria: "DevOps", nivel: "Intermedio", temas: 8, link: "tutoriales/docker.html", icono: "🐳" },
+            { nombre: "React", categoria: "Web", nivel: "Intermedio", temas: 12, link: "tutoriales/react.html", icono: "⚛️" },
+            { nombre: "Python", categoria: "Programación", nivel: "Básico", temas: 15, link: "tutoriales/python.html", icono: "🐍" },
+            { nombre: "Node.js", categoria: "Web", nivel: "Intermedio", temas: 10, link: "tutoriales/nodejs.html", icono: "🟢" },
+            { nombre: "SQL", categoria: "Datos", nivel: "Básico", temas: 8, link: "tutoriales/sql.html", icono: "🗄️" },
+            { nombre: "Linux", categoria: "DevOps", nivel: "Básico", temas: 12, link: "tutoriales/linux.html", icono: "🐧" },
+            { nombre: "JavaScript", categoria: "Programación", nivel: "Básico", temas: 14, link: "tutoriales/javascript.html", icono: "📜" },
+        ];
+
+        let filtrosActivos = { categoria: 'todos', busqueda: '' };
+
+        function getCatClass(cat) {
+            const map = {
+                'Programación': 'cat-programacion',
+                'DevOps': 'cat-devops',
+                'Web': 'cat-web',
+                'Datos': 'cat-datos',
+                'Herramientas': 'cat-herramientas'
+            };
+            return map[cat] || 'cat-herramientas';
+        }
+
+        function crearTutorialCard(tutorial) {
+            return `
+                <a href="${tutorial.link}" class="tutorial-card block">
+                    <div class="p-6">
+                        <div class="text-5xl mb-4 text-center">${tutorial.icono}</div>
+                        <div class="flex items-start justify-between mb-3">
+                            <span class="cat-badge ${getCatClass(tutorial.categoria)}">${tutorial.categoria}</span>
+                            <span class="text-xs font-bold text-gray-500">${tutorial.nivel}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[var(--secondary-color)] mb-2">${tutorial.nombre}</h3>
+                        <div class="flex items-center text-sm text-gray-500 pt-4 border-t border-gray-200">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                            <span>${tutorial.temas} temas</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        function filtrarTutoriales() {
+            let filtrados = tutoriales;
+            if (filtrosActivos.categoria !== 'todos') {
+                filtrados = filtrados.filter(t => t.categoria === filtrosActivos.categoria);
+            }
+            if (filtrosActivos.busqueda) {
+                const termino = filtrosActivos.busqueda.toLowerCase();
+                filtrados = filtrados.filter(t =>
+                    t.nombre.toLowerCase().includes(termino) ||
+                    t.categoria.toLowerCase().includes(termino)
+                );
+            }
+            return filtrados;
+        }
+
+        function renderizarTutoriales() {
+            const grid = document.getElementById('tutorialsGrid');
+            const noResults = document.getElementById('noResults');
+            const resultsCount = document.getElementById('resultsCount');
+            const filtrados = filtrarTutoriales();
+
+            if (filtrados.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                resultsCount.textContent = 'No se encontraron tutoriales';
+            } else {
+                noResults.classList.add('hidden');
+                grid.innerHTML = filtrados.map(t => crearTutorialCard(t)).join('');
+                resultsCount.textContent = `Mostrando ${filtrados.length} tutorial${filtrados.length !== 1 ? 'es' : ''}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarTutoriales();
+
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const filterType = e.target.dataset.filter;
+                    const filterValue = e.target.dataset.value;
+                    document.querySelectorAll(`[data-filter="${filterType}"]`).forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    filtrosActivos[filterType] = filterValue;
+                    renderizarTutoriales();
+                });
+            });
+
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                filtrosActivos.busqueda = e.target.value;
+                renderizarTutoriales();
+            });
+
+            document.getElementById('clearFilters').addEventListener('click', () => {
+                filtrosActivos = { categoria: 'todos', busqueda: '' };
+                document.getElementById('searchInput').value = '';
+                document.querySelectorAll('[data-filter]').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('[data-value="todos"]').forEach(btn => btn.classList.add('active'));
+                renderizarTutoriales();
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Fundamentos de Programación - Curso ISC ITCM</title>
+    <meta name="description"
+        content="Curso completo de Fundamentos de Programación (SCD1008) con videos, recursos y contenido organizado por unidades.">
+
+    <link href="https://www.cdmadero.tecnm.mx/images/favicon.png" rel="icon" type="image/png" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+        :root {
+            --primary-color: #1B396A;
+            --secondary-color: #14305C;
+            --accent-color: #f0f2f4;
+            --text-primary: #000000;
+            --text-secondary: #807F83;
+            --background-color: #ffffff;
+            --border-color: #dce0e5;
+        }
+        body {
+            font-family: "Noto Sans", sans-serif;
+        }
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+        }
+        
+        /* Premium Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .animate-slide-in {
+            animation: slideInLeft 0.5s ease-out forwards;
+        }
+        
+        .animate-scale-in {
+            animation: scaleIn 0.4s ease-out forwards;
+        }
+        
+        .tab-btn {
+            @apply px-6 py-3 font-semibold text-gray-600 border-b-2 border-transparent transition-all duration-300;
+        }
+        .tab-btn.active {
+            @apply text-[var(--primary-color)] border-[var(--primary-color)];
+            transform: translateY(-2px);
+        }
+        .tab-btn:hover:not(.active) {
+            @apply text-[var(--secondary-color)] bg-gray-50;
+            transform: translateY(-1px);
+        }
+        
+        .sidebar-topic {
+            @apply px-4 py-3 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-between;
+        }
+        .sidebar-topic:hover {
+            @apply bg-gray-100;
+            transform: translateX(4px);
+        }
+        .sidebar-topic.active {
+            @apply bg-[var(--primary-color)] text-white;
+            box-shadow: 0 4px 12px rgba(27, 57, 106, 0.3);
+        }
+        
+        .stat-card {
+            @apply bg-white p-6 rounded-xl shadow-md border border-gray-200;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question-card {
+            @apply bg-white p-6 rounded-lg border border-gray-200;
+            transition: all 0.3s ease;
+        }
+        .question-card:hover {
+            @apply border-[var(--primary-color)];
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Loading state */
+        .loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid var(--primary-color);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Smooth transitions for all interactive elements */
+        button, a, input, textarea {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-[var(--text-primary)]">
+
+    <!-- Header -->
+    <header class="bg-[var(--primary-color)] text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="../index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                        <img src="https://www.cdmadero.tecnm.mx/images/logo-itcm-v2.png" alt="ITCM" class="h-10">
+                        <div class="hidden md:block">
+                            <p class="text-xs text-gray-200">Plataforma de Cursos</p>
+                            <p class="text-sm font-bold">ISC - ITCM</p>
+                        </div>
+                    </a>
+                </div>
+                <a href="../plan-de-estudios.html"
+                    class="px-4 py-2 bg-white text-[var(--primary-color)] rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm md:text-base">
+                    ← Catálogo
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Course Header -->
+    <div class="bg-[var(--secondary-color)] text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="px-3 py-1 bg-blue-500 rounded-full text-xs font-semibold">Programación</span>
+                    <span class="text-sm text-gray-300">Semestre 1</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold mb-3">Fundamentos de Programación</h1>
+                <p class="text-gray-200 mb-4">Clave: SCD1008 | Créditos SATCA: 2-3-5</p>
+                <div class="flex flex-wrap gap-4 text-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-xl">book</span>
+                        <span>5 unidades</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-xl">play_circle</span>
+                        <span>20 videos</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-xl">schedule</span>
+                        <span>~240 minutos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Column -->
+            <div class="lg:col-span-2">
+                <!-- Tabs -->
+                <div class="bg-white rounded-xl shadow-md mb-6 overflow-hidden">
+                    <div class="flex border-b border-gray-200 overflow-x-auto">
+                        <button class="tab-btn active" data-tab="overview">
+                            <span class="material-symbols-outlined align-middle mr-1 text-xl">info</span>
+                            Overview
+                        </button>
+                        <button class="tab-btn" data-tab="content">
+                            <span class="material-symbols-outlined align-middle mr-1 text-xl">play_circle</span>
+                            Contenido
+                        </button>
+                        <button class="tab-btn" data-tab="qa">
+                            <span class="material-symbols-outlined align-middle mr-1 text-xl">forum</span>
+                            Q&A
+                        </button>
+                        <button class="tab-btn" data-tab="resources">
+                            <span class="material-symbols-outlined align-middle mr-1 text-xl">folder</span>
+                            Recursos
+                        </button>
+                        <button class="tab-btn" data-tab="stats">
+                            <span class="material-symbols-outlined align-middle mr-1 text-xl">analytics</span>
+                            Estadísticas
+                        </button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="p-6">
+                        <!-- Overview Tab -->
+                        <div id="tab-overview" class="tab-content">
+                            <h2 class="text-2xl font-bold text-[var(--secondary-color)] mb-4">Sobre este curso</h2>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                Esta asignatura aporta al perfil del egresado, la capacidad para desarrollar un
+                                pensamiento lógico a través del diseño de algoritmos utilizando herramientas de
+                                programación para el desarrollo de aplicaciones computacionales que resuelvan problemas
+                                reales.
+                            </p>
+
+                            <h3 class="text-xl font-bold text-[var(--secondary-color)] mb-3">Competencia General</h3>
+                            <div class="bg-blue-50 border-l-4 border-[var(--primary-color)] p-4 mb-6">
+                                <p class="text-gray-700">
+                                    <span
+                                        class="material-symbols-outlined align-middle mr-2 text-[var(--primary-color)]">code_blocks</span>
+                                    Aplica algoritmos y lenguajes de programación para diseñar e implementar soluciones
+                                    a problemáticas del entorno.
+                                </p>
+                            </div>
+
+                            <h3 class="text-xl font-bold text-[var(--secondary-color)] mb-3">Lo que aprenderás</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-green-600 mt-1">check_circle</span>
+                                    <span class="text-gray-700">Diseñar algoritmos utilizando diagramas de flujo y
+                                        pseudocódigo</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-green-600 mt-1">check_circle</span>
+                                    <span class="text-gray-700">Aplicar estructuras de control (secuenciales, selectivas
+                                        e iterativas)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-green-600 mt-1">check_circle</span>
+                                    <span class="text-gray-700">Utilizar arreglos y estructuras de datos básicas</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-green-600 mt-1">check_circle</span>
+                                    <span class="text-gray-700">Implementar programas modulares con funciones</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Content Tab -->
+                        <div id="tab-content" class="tab-content hidden">
+                            <h2 class="text-2xl font-bold text-[var(--secondary-color)] mb-4">Video del tema actual</h2>
+
+                            <!-- Video Player -->
+                            <div class="aspect-video bg-black rounded-lg overflow-hidden mb-6">
+                                <iframe id="videoPlayer" width="100%" height="100%" src="" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+
+                            <div id="videoInfo" class="bg-gray-50 p-4 rounded-lg">
+                                <h3 class="font-bold text-lg text-[var(--secondary-color)] mb-2">1.1 Conceptos básicos
+                                </h3>
+                                <p class="text-gray-600 text-sm mb-2">Unidad 1: Diseño Algorítmico</p>
+                                <p class="text-gray-700">Introducción a los conceptos fundamentales de algoritmos y
+                                    programación.</p>
+                            </div>
+
+                            <div class="mt-6 flex gap-4">
+                                <button id="prevVideo"
+                                    class="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
+                                    ← Anterior
+                                </button>
+                                <button id="nextVideo"
+                                    class="flex-1 px-4 py-3 bg-[var(--primary-color)] text-white rounded-lg font-semibold hover:bg-[var(--secondary-color)] transition-colors">
+                                    Siguiente →
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Q&A Tab -->
+                        <div id="tab-qa" class="tab-content hidden">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-2xl font-bold text-[var(--secondary-color)]">Preguntas y Respuestas</h2>
+                                <button id="newQuestionBtn"
+                                    class="px-4 py-2 bg-[var(--primary-color)] text-white rounded-lg font-semibold hover:bg-[var(--secondary-color)] transition-colors">
+                                    + Nueva Pregunta
+                                </button>
+                            </div>
+
+                            <!-- New Question Form (Hidden by default) -->
+                            <div id="newQuestionForm" class="hidden bg-gray-50 p-6 rounded-lg mb-6">
+                                <h3 class="font-bold text-lg mb-4">Hacer una pregunta</h3>
+                                <input type="text" id="questionTitle" placeholder="Título de tu pregunta..."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-3 focus:border-[var(--primary-color)] focus:outline-none">
+                                <textarea id="questionBody" placeholder="Describe tu pregunta en detalle..." rows="4"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-3 focus:border-[var(--primary-color)] focus:outline-none"></textarea>
+                                <div class="flex gap-3">
+                                    <button id="submitQuestion"
+                                        class="px-6 py-2 bg-[var(--primary-color)] text-white rounded-lg font-semibold hover:bg-[var(--secondary-color)] transition-colors">
+                                        Publicar Pregunta
+                                    </button>
+                                    <button id="cancelQuestion"
+                                        class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 transition-colors">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Search and Filters -->
+                            <div class="mb-6">
+                                <input type="text" id="searchQuestions" placeholder="Buscar preguntas..."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-[var(--primary-color)] focus:outline-none">
+                            </div>
+
+                            <!-- Questions List -->
+                            <div id="questionsList" class="space-y-4">
+                                <!-- Example Question -->
+                                <div class="question-card">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <h3 class="font-bold text-lg text-[var(--secondary-color)] flex-1">¿Cuál es la
+                                            diferencia entre un algoritmo y un programa?</h3>
+                                        <span class="text-xs text-gray-500 ml-4">hace 2 días</span>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-3">Estoy confundido sobre la diferencia entre
+                                        estos dos conceptos. ¿Alguien puede explicarlo de manera sencilla?</p>
+                                    <div class="flex items-center gap-4 text-sm text-gray-500">
+                                        <span class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-lg">visibility</span>
+                                            156 vistas
+                                        </span>
+                                        <span class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-lg">comment</span>
+                                            3 respuestas
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="question-card">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <h3 class="font-bold text-lg text-[var(--secondary-color)] flex-1">¿Cómo puedo
+                                            mejorar mi lógica de programación?</h3>
+                                        <span class="text-xs text-gray-500 ml-4">hace 1 semana</span>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-3">Tengo dificultades para resolver problemas de
+                                        programación. ¿Qué me recomiendan para practicar?</p>
+                                    <div class="flex items-center gap-4 text-sm text-gray-500">
+                                        <span class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-lg">visibility</span>
+                                            243 vistas
+                                        </span>
+                                        <span class="flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-lg">comment</span>
+                                            5 respuestas
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resources Tab -->
+                        <div id="tab-resources" class="tab-content hidden">
+                            <h2 class="text-2xl font-bold text-[var(--secondary-color)] mb-6">Recursos del Curso</h2>
+
+                            <h3 class="text-xl font-bold text-[var(--secondary-color)] mb-4">📚 Bibliografía Recomendada
+                            </h3>
+                            <ul class="space-y-3 mb-8">
+                                <li class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                                    <span
+                                        class="material-symbols-outlined text-[var(--primary-color)] mt-1">menu_book</span>
+                                    <div>
+                                        <p class="font-semibold">Deitel, P. & Deitel, H. (2008)</p>
+                                        <p class="text-sm text-gray-600">Como Programar en C++. Pearson Prentice Hall.
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                                    <span
+                                        class="material-symbols-outlined text-[var(--primary-color)] mt-1">menu_book</span>
+                                    <div>
+                                        <p class="font-semibold">Joyanes, L. (2008)</p>
+                                        <p class="text-sm text-gray-600">Fundamentos de programación: algoritmos,
+                                            estructura de datos y objetos. McGraw-Hill.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                                    <span
+                                        class="material-symbols-outlined text-[var(--primary-color)] mt-1">menu_book</span>
+                                    <div>
+                                        <p class="font-semibold">Cairo, O. (2005)</p>
+                                        <p class="text-sm text-gray-600">Metodología de la Programación, Algoritmos
+                                            Diagrama de Flujo y Programas. Alfaomega.</p>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <h3 class="text-xl font-bold text-[var(--secondary-color)] mb-4">💻 Software Recomendado
+                            </h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                                    <span
+                                        class="material-symbols-outlined text-[var(--primary-color)] mt-1">computer</span>
+                                    <div>
+                                        <p class="font-semibold">Code::Blocks</p>
+                                        <p class="text-sm text-gray-600">Entorno de Desarrollo Integrado (IDE)
+                                            multiplataforma</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                                    <span
+                                        class="material-symbols-outlined text-[var(--primary-color)] mt-1">computer</span>
+                                    <div>
+                                        <p class="font-semibold">Dev-C++</p>
+                                        <p class="text-sm text-gray-600">IDE ligero para C/C++</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Statistics Tab -->
+                        <div id="tab-stats" class="tab-content hidden">
+                            <h2 class="text-2xl font-bold text-[var(--secondary-color)] mb-6">Estadísticas del Curso
+                            </h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                                <div class="stat-card">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-gray-600 font-semibold">Total de Vistas</span>
+                                        <span class="material-symbols-outlined text-blue-500">visibility</span>
+                                    </div>
+                                    <p class="text-3xl font-bold text-[var(--primary-color)]">1,234</p>
+                                    <p class="text-xs text-gray-500 mt-1">↑ 12% vs mes anterior</p>
+                                </div>
+
+                                <div class="stat-card">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-gray-600 font-semibold">Videos Vistos</span>
+                                        <span class="material-symbols-outlined text-green-500">play_circle</span>
+                                    </div>
+                                    <p class="text-3xl font-bold text-[var(--primary-color)]">856</p>
+                                    <p class="text-xs text-gray-500 mt-1">↑ 8% vs mes anterior</p>
+                                </div>
+
+                                <div class="stat-card">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-gray-600 font-semibold">Preguntas</span>
+                                        <span class="material-symbols-outlined text-purple-500">forum</span>
+                                    </div>
+                                    <p class="text-3xl font-bold text-[var(--primary-color)]">47</p>
+                                    <p class="text-xs text-gray-500 mt-1">15 sin responder</p>
+                                </div>
+
+                                <div class="stat-card">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-gray-600 font-semibold">Tasa de Finalización</span>
+                                        <span class="material-symbols-outlined text-orange-500">trending_up</span>
+                                    </div>
+                                    <p class="text-3xl font-bold text-[var(--primary-color)]">68%</p>
+                                    <p class="text-xs text-gray-500 mt-1">↑ 5% vs mes anterior</p>
+                                </div>
+                            </div>
+
+                            <h3 class="text-xl font-bold text-[var(--secondary-color)] mb-4">Videos Más Vistos</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <p class="font-semibold">1.1 Conceptos básicos</p>
+                                        <p class="text-sm text-gray-600">Unidad 1</p>
+                                    </div>
+                                    <span class="text-[var(--primary-color)] font-bold">342 vistas</span>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <p class="font-semibold">3.2 Estructuras selectivas</p>
+                                        <p class="text-sm text-gray-600">Unidad 3</p>
+                                    </div>
+                                    <span class="text-[var(--primary-color)] font-bold">298 vistas</span>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <p class="font-semibold">4.2 Arreglos unidimensionales</p>
+                                        <p class="text-sm text-gray-600">Unidad 4</p>
+                                    </div>
+                                    <span class="text-[var(--primary-color)] font-bold">276 vistas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-md p-6 sticky top-24">
+                    <h3 class="font-bold text-lg text-[var(--secondary-color)] mb-4">Contenido del Curso</h3>
+
+                    <div class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                        <!-- Unidad 1 -->
+                        <div>
+                            <button
+                                class="w-full text-left font-semibold text-[var(--secondary-color)] mb-2 flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+                                onclick="toggleUnit(1)">
+                                <span>1. Diseño Algorítmico</span>
+                                <span class="material-symbols-outlined" id="icon-unit-1">expand_more</span>
+                            </button>
+                            <div id="unit-1" class="space-y-1 ml-4">
+                                <div class="sidebar-topic active" data-video="dQw4w9WgXcQ"
+                                    data-title="1.1 Conceptos básicos" data-unit="Diseño Algorítmico">
+                                    <span class="text-sm">1.1 Conceptos básicos</span>
+                                    <span class="text-xs text-gray-500">15min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="1.2 Representación de algoritmos" data-unit="Diseño Algorítmico">
+                                    <span class="text-sm">1.2 Representación de algoritmos</span>
+                                    <span class="text-xs text-gray-500">20min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="1.3 Diseño de algoritmos" data-unit="Diseño Algorítmico">
+                                    <span class="text-sm">1.3 Diseño de algoritmos</span>
+                                    <span class="text-xs text-gray-500">25min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ" data-title="1.4 Diseño de funciones"
+                                    data-unit="Diseño Algorítmico">
+                                    <span class="text-sm">1.4 Diseño de funciones</span>
+                                    <span class="text-xs text-gray-500">18min</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Unidad 2 -->
+                        <div>
+                            <button
+                                class="w-full text-left font-semibold text-[var(--secondary-color)] mb-2 flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+                                onclick="toggleUnit(2)">
+                                <span>2. Introducción a la Programación</span>
+                                <span class="material-symbols-outlined" id="icon-unit-2">expand_more</span>
+                            </button>
+                            <div id="unit-2" class="space-y-1 ml-4 hidden">
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ" data-title="2.1 Conceptos básicos"
+                                    data-unit="Introducción a la Programación">
+                                    <span class="text-sm">2.1 Conceptos básicos</span>
+                                    <span class="text-xs text-gray-500">12min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="2.2 Características del lenguaje"
+                                    data-unit="Introducción a la Programación">
+                                    <span class="text-sm">2.2 Características del lenguaje</span>
+                                    <span class="text-xs text-gray-500">15min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="2.3 Estructura básica de un programa"
+                                    data-unit="Introducción a la Programación">
+                                    <span class="text-sm">2.3 Estructura básica</span>
+                                    <span class="text-xs text-gray-500">18min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="2.4 Elementos del lenguaje" data-unit="Introducción a la Programación">
+                                    <span class="text-sm">2.4 Elementos del lenguaje</span>
+                                    <span class="text-xs text-gray-500">22min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="2.5 Traducción de un programa"
+                                    data-unit="Introducción a la Programación">
+                                    <span class="text-sm">2.5 Traducción de un programa</span>
+                                    <span class="text-xs text-gray-500">16min</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Unidad 3 -->
+                        <div>
+                            <button
+                                class="w-full text-left font-semibold text-[var(--secondary-color)] mb-2 flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+                                onclick="toggleUnit(3)">
+                                <span>3. Control de Flujo</span>
+                                <span class="material-symbols-outlined" id="icon-unit-3">expand_more</span>
+                            </button>
+                            <div id="unit-3" class="space-y-1 ml-4 hidden">
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="3.1 Estructuras secuenciales" data-unit="Control de Flujo">
+                                    <span class="text-sm">3.1 Estructuras secuenciales</span>
+                                    <span class="text-xs text-gray-500">14min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="3.2 Estructuras selectivas" data-unit="Control de Flujo">
+                                    <span class="text-sm">3.2 Estructuras selectivas</span>
+                                    <span class="text-xs text-gray-500">20min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="3.3 Estructuras iterativas" data-unit="Control de Flujo">
+                                    <span class="text-sm">3.3 Estructuras iterativas</span>
+                                    <span class="text-xs text-gray-500">25min</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Unidad 4 -->
+                        <div>
+                            <button
+                                class="w-full text-left font-semibold text-[var(--secondary-color)] mb-2 flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+                                onclick="toggleUnit(4)">
+                                <span>4. Organización de datos</span>
+                                <span class="material-symbols-outlined" id="icon-unit-4">expand_more</span>
+                            </button>
+                            <div id="unit-4" class="space-y-1 ml-4 hidden">
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ" data-title="4.1 Arreglos"
+                                    data-unit="Organización de datos">
+                                    <span class="text-sm">4.1 Arreglos</span>
+                                    <span class="text-xs text-gray-500">16min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="4.2 Arreglos unidimensionales" data-unit="Organización de datos">
+                                    <span class="text-sm">4.2 Unidimensionales</span>
+                                    <span class="text-xs text-gray-500">22min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="4.3 Arreglos multidimensionales" data-unit="Organización de datos">
+                                    <span class="text-sm">4.3 Multidimensionales</span>
+                                    <span class="text-xs text-gray-500">24min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="4.4 Estructuras o registros" data-unit="Organización de datos">
+                                    <span class="text-sm">4.4 Estructuras o registros</span>
+                                    <span class="text-xs text-gray-500">18min</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Unidad 5 -->
+                        <div>
+                            <button
+                                class="w-full text-left font-semibold text-[var(--secondary-color)] mb-2 flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+                                onclick="toggleUnit(5)">
+                                <span>5. Modularidad</span>
+                                <span class="material-symbols-outlined" id="icon-unit-5">expand_more</span>
+                            </button>
+                            <div id="unit-5" class="space-y-1 ml-4 hidden">
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ"
+                                    data-title="5.1 Declaración y uso de módulos" data-unit="Modularidad">
+                                    <span class="text-sm">5.1 Declaración de módulos</span>
+                                    <span class="text-xs text-gray-500">15min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ" data-title="5.2 Paso de parámetros"
+                                    data-unit="Modularidad">
+                                    <span class="text-sm">5.2 Paso de parámetros</span>
+                                    <span class="text-xs text-gray-500">20min</span>
+                                </div>
+                                <div class="sidebar-topic" data-video="dQw4w9WgXcQ" data-title="5.3 Implementación"
+                                    data-unit="Modularidad">
+                                    <span class="text-sm">5.3 Implementación</span>
+                                    <span class="text-xs text-gray-500">22min</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[var(--secondary-color)] text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">© 2025 Instituto Tecnológico de Ciudad Madero - ISC</p>
+            <p class="text-xs mt-2 text-gray-300">Plataforma de Cursos ISC - Material educativo de apoyo</p>
+            <p class="text-xs mt-3 text-gray-400">
+                Creado por <span class="font-semibold text-white">Jesús Olvera</span>
+            </p>
+        </div>
+    </footer>
+
+    <script src="../js/videos-por-materia.js"></script>
+    <script>
+        // Obtener videos de esta materia desde videos-por-materia.js
+        const codigoMateria = "SCD1008"; // Fundamentos de Programación
+        const datosMateria = obtenerVideosMateria(codigoMateria);
+        const videosReales = datosMateria ? datosMateria.videos : {};
+
+        // Page load animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate elements on load
+            const animateElements = document.querySelectorAll('.stat-card, .question-card');
+            animateElements.forEach((el, index) => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.classList.add('animate-fade-in');
+                }, index * 100);
+            });
+            
+            // Load first video automatically
+            setTimeout(() => {
+                const firstTopic = document.querySelector('.sidebar-topic');
+                if (firstTopic) {
+                    firstTopic.click(); // Trigger click to load first video
+                }
+            }, 500);
+        });
+
+        // Tab switching with animation
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active from all tabs
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => {
+                    c.classList.add('hidden');
+                    c.style.opacity = '0';
+                });
+
+                // Add active to clicked tab
+                btn.classList.add('active');
+                const tabId = 'tab-' + btn.dataset.tab;
+                const tabContent = document.getElementById(tabId);
+                tabContent.classList.remove('hidden');
+
+                // Animate tab content
+                setTimeout(() => {
+                    tabContent.classList.add('animate-fade-in');
+                }, 50);
+            });
+        });
+
+        // Unit toggle with animation
+        function toggleUnit(unitNum) {
+            const unit = document.getElementById(`unit-${unitNum}`);
+            const icon = document.getElementById(`icon-unit-${unitNum}`);
+
+            if (unit.classList.contains('hidden')) {
+                unit.classList.remove('hidden');
+                unit.style.opacity = '0';
+                setTimeout(() => {
+                    unit.classList.add('animate-slide-in');
+                }, 50);
+                icon.textContent = 'expand_less';
+            } else {
+                unit.classList.add('hidden');
+                icon.textContent = 'expand_more';
+            }
+        }
+
+        // Video selection with loading state
+        document.querySelectorAll('.sidebar-topic').forEach((topic, index) => {
+            // Set real video IDs
+            const topicId = topic.querySelector('.text-sm').textContent.split(' ')[0];
+            if (videosReales[topicId]) {
+                topic.dataset.video = videosReales[topicId];
+            }
+
+            topic.addEventListener('click', () => {
+                // Remove active from all topics
+                document.querySelectorAll('.sidebar-topic').forEach(t => t.classList.remove('active'));
+                topic.classList.add('active');
+
+                // Show loading state
+                const videoPlayer = document.getElementById('videoPlayer');
+                const videoContainer = videoPlayer.parentElement;
+                videoContainer.classList.add('loading');
+
+                // Update video
+                const videoId = topic.dataset.video;
+                const title = topic.dataset.title;
+                const unit = topic.dataset.unit;
+
+                setTimeout(() => {
+                    videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=0`;
+                    document.getElementById('videoInfo').innerHTML = `
+                        <h3 class="font-bold text-lg text-[var(--secondary-color)] mb-2">${title}</h3>
+                        <p class="text-gray-600 text-sm mb-2">Unidad: ${unit}</p>
+                        <p class="text-gray-700">Video educativo en español sobre ${title.toLowerCase()}.</p>
+                    `;
+
+                    // Remove loading state
+                    setTimeout(() => {
+                        videoContainer.classList.remove('loading');
+                    }, 500);
+                }, 300);
+
+                // Switch to content tab
+                document.querySelector('[data-tab="content"]').click();
+
+                // Update current video index
+                currentVideoIndex = index;
+            });
+        });
+
+        // Q&A functionality with animations
+        document.getElementById('newQuestionBtn').addEventListener('click', () => {
+            const form = document.getElementById('newQuestionForm');
+            form.classList.remove('hidden');
+            form.style.opacity = '0';
+            setTimeout(() => {
+                form.classList.add('animate-scale-in');
+            }, 50);
+        });
+
+        document.getElementById('cancelQuestion').addEventListener('click', () => {
+            document.getElementById('newQuestionForm').classList.add('hidden');
+            document.getElementById('questionTitle').value = '';
+            document.getElementById('questionBody').value = '';
+        });
+
+        document.getElementById('submitQuestion').addEventListener('click', () => {
+            const title = document.getElementById('questionTitle').value;
+            const body = document.getElementById('questionBody').value;
+
+            if (title && body) {
+                // Show success animation
+                const btn = document.getElementById('submitQuestion');
+                btn.textContent = '✓ Publicada!';
+                btn.style.backgroundColor = '#10b981';
+
+                setTimeout(() => {
+                    alert('Pregunta publicada exitosamente! (Demo - en producción se guardaría en base de datos)');
+                    document.getElementById('cancelQuestion').click();
+                    btn.textContent = 'Publicar Pregunta';
+                    btn.style.backgroundColor = '';
+                }, 600);
+            } else {
+                alert('Por favor completa todos los campos');
+            }
+        });
+
+        // Search questions with debounce
+        let searchTimeout;
+        document.getElementById('searchQuestions').addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = e.target.value.toLowerCase();
+                console.log('Buscando:', searchTerm);
+                // Aquí iría la lógica de búsqueda real
+            }, 300);
+        });
+
+        // Video navigation with smooth transitions
+        let currentVideoIndex = 0;
+        const allTopics = document.querySelectorAll('.sidebar-topic');
+
+        document.getElementById('prevVideo').addEventListener('click', () => {
+            if (currentVideoIndex > 0) {
+                currentVideoIndex--;
+                allTopics[currentVideoIndex].click();
+                allTopics[currentVideoIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+
+        document.getElementById('nextVideo').addEventListener('click', () => {
+            if (currentVideoIndex < allTopics.length - 1) {
+                currentVideoIndex++;
+                allTopics[currentVideoIndex].click();
+                allTopics[currentVideoIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+
+        // Update button states
+        function updateNavigationButtons() {
+            document.getElementById('prevVideo').disabled = currentVideoIndex === 0;
+            document.getElementById('nextVideo').disabled = currentVideoIndex === allTopics.length - 1;
+        }
+
+        // Initial button state
+        updateNavigationButtons();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Catálogo de Cursos - ISC ITCM</title>
+    <meta name="description"
+        content="Explora el catálogo completo de cursos de Ingeniería en Sistemas Computacionales del ITCM. Encuentra cursos por semestre, área o búsqueda.">
+    <link href="https://www.cdmadero.tecnm.mx/images/favicon.png" rel="icon" type="image/png" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+        :root {
+            --primary-color: #1B396A;
+            --secondary-color: #14305C;
+            --accent-color: #f0f2f4;
+            --text-primary: #000000;
+            --text-secondary: #807F83;
+            --background-color: #ffffff;
+            --border-color: #dce0e5;
+        }
+        body {
+            font-family: "Noto Sans", sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+        }
+        
+        .course-card {
+            @apply bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden transition-all duration-300 cursor-pointer;
+        }
+        
+        .course-card:hover {
+            @apply shadow-xl -translate-y-2 border-[var(--primary-color)];
+        }
+        
+        .filter-btn {
+            @apply px-4 py-2 rounded-full font-semibold text-sm transition-all duration-300 border-2;
+        }
+        
+        .filter-btn.active {
+            @apply bg-[var(--primary-color)] text-white border-[var(--primary-color)] scale-105;
+        }
+        
+        .filter-btn:not(.active) {
+            @apply bg-white text-[var(--secondary-color)] border-gray-300 hover:border-[var(--primary-color)] hover:text-[var(--primary-color)];
+        }
+        
+        .area-badge {
+            @apply inline-block px-3 py-1 rounded-full text-xs font-semibold;
+        }
+        
+        .area-programacion { @apply bg-blue-100 text-blue-800; }
+        .area-redes { @apply bg-green-100 text-green-800; }
+        .area-matematicas { @apply bg-purple-100 text-purple-800; }
+        .area-bases-datos { @apply bg-orange-100 text-orange-800; }
+        .area-software { @apply bg-pink-100 text-pink-800; }
+        .area-otros { @apply bg-gray-100 text-gray-800; }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-[var(--text-primary)]">
+    <div class="relative flex size-full min-h-screen flex-col">
+        <div class="flex h-full grow flex-col">
+            <!-- Header -->
+            <header class="bg-[var(--primary-color)] text-white shadow-lg sticky top-0 z-50">
+                <div class="container mx-auto px-4 py-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <img src="https://www.cdmadero.tecnm.mx/images/logo-itcm-v2.png" alt="ITCM" class="h-12">
+                            <div>
+                                <h1 class="text-xl font-bold">Catálogo de Cursos</h1>
+                                <p class="text-sm text-gray-200">Ingeniería en Sistemas Computacionales</p>
+                            </div>
+                        </div>
+                        <a href="index.html"
+                            class="px-4 py-2 bg-white text-[var(--primary-color)] rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                            ← Inicio
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1">
+                <div class="container mx-auto px-4 py-8">
+                    <!-- Search and Filters Section -->
+                    <div class="mb-8">
+                        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                            <!-- Search Bar -->
+                            <div class="mb-6">
+                                <label for="searchInput" class="block text-sm font-semibold text-gray-700 mb-2">Buscar
+                                    curso</label>
+                                <div class="relative">
+                                    <input type="text" id="searchInput"
+                                        placeholder="Busca por nombre o clave de materia..."
+                                        class="w-full px-4 py-3 pl-12 border-2 border-gray-300 rounded-lg focus:border-[var(--primary-color)] focus:outline-none transition-colors">
+                                    <svg class="absolute left-4 top-3.5 w-5 h-5 text-gray-400" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Filters -->
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <!-- Semestre Filter -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Filtrar por
+                                        Semestre</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button class="filter-btn active" data-filter="semestre"
+                                            data-value="todos">Todos</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="1">1°</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="2">2°</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="3">3°</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="4">4°</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="5">5°</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="6">6°</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="7">7°</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="8">8°</button>
+                                        <button class="filter-btn" data-filter="semestre" data-value="9">9°</button>
+                                    </div>
+                                </div>
+
+                                <!-- Area Filter -->
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Filtrar por
+                                        Área</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button class="filter-btn active" data-filter="area"
+                                            data-value="todos">Todos</button>
+                                        <button class="filter-btn" data-filter="area"
+                                            data-value="Programación">Programación</button>
+                                        <button class="filter-btn" data-filter="area" data-value="Redes">Redes</button>
+                                        <button class="filter-btn" data-filter="area"
+                                            data-value="Matemáticas">Matemáticas</button>
+                                        <button class="filter-btn" data-filter="area"
+                                            data-value="Bases de Datos">BD</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results Counter -->
+                        <div class="flex items-center justify-between text-sm text-gray-600">
+                            <p id="resultsCount" class="font-semibold"></p>
+                            <button id="clearFilters"
+                                class="text-[var(--primary-color)] hover:underline font-semibold">Limpiar
+                                filtros</button>
+                        </div>
+                    </div>
+
+                    <!-- Courses Grid -->
+                    <div id="coursesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <!-- Courses will be dynamically inserted here -->
+                    </div>
+
+                    <!-- No Results Message -->
+                    <div id="noResults" class="hidden text-center py-16">
+                        <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                        <h3 class="text-xl font-bold text-gray-600 mb-2">No se encontraron cursos</h3>
+                        <p class="text-gray-500">Intenta con otros filtros o términos de búsqueda</p>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-[var(--secondary-color)] text-white py-6 mt-12">
+                <div class="container mx-auto px-4 text-center">
+                    <p class="text-sm">© 2025 Instituto Tecnológico de Ciudad Madero - ISC</p>
+                    <p class="text-xs mt-2 text-gray-300">Plataforma de Cursos ISC - Material educativo de apoyo</p>
+                    <p class="text-xs mt-3 text-gray-400">
+                        Creado por <span class="font-semibold text-white">Jesús Olvera</span>
+                    </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="js/cursos-data.js"></script>
+    <script>
+        // Datos de cursos (expandir con más cursos según necesidad)
+        const cursosCompletos = [
+            { clave: "SCD1008", nombre: "Fundamentos de Programación", semestre: 1, area: "Programación", creditos: [2, 3, 5], unidades: 5, link: "semestre1/SCD1008.html" },
+            { clave: "ACA0907", nombre: "Taller de Ética", semestre: 1, area: "Humanidades", creditos: [0, 4, 4], unidades: 4, link: "semestre1/ACA0907.html" },
+            { clave: "ACC0906", nombre: "Fundamentos de Investigación", semestre: 1, area: "Investigación", creditos: [2, 2, 4], unidades: 4, link: "semestre1/ACC0906.html" },
+            { clave: "ACF0901", nombre: "Cálculo Diferencial", semestre: 1, area: "Matemáticas", creditos: [3, 2, 5], unidades: 5, link: "semestre1/ACF0901.html" },
+            { clave: "AEF1041", nombre: "Matemáticas Discretas", semestre: 1, area: "Matemáticas", creditos: [3, 2, 5], unidades: 5, link: "semestre1/AEF1041.html" },
+            { clave: "SCH1024", nombre: "Taller de Administración", semestre: 1, area: "Administración", creditos: [1, 3, 4], unidades: 4, link: "semestre1/SCH1024.html" },
+
+            { clave: "SCD1020", nombre: "Programación Orientada a Objetos", semestre: 2, area: "Programación", creditos: [2, 3, 5], unidades: 5, link: "semestre2/SCD1020.html" },
+            { clave: "AEC1008", nombre: "Contabilidad Financiera", semestre: 2, area: "Administración", creditos: [2, 2, 4], unidades: 4, link: "semestre2/AEC1008.html" },
+            { clave: "ACF0902", nombre: "Cálculo Integral", semestre: 2, area: "Matemáticas", creditos: [3, 2, 5], unidades: 5, link: "semestre2/ACF0902.html" },
+            { clave: "ACF0903", nombre: "Álgebra Lineal", semestre: 2, area: "Matemáticas", creditos: [3, 2, 5], unidades: 5, link: "semestre2/ACF0903.html" },
+            { clave: "AEC1058", nombre: "Química", semestre: 2, area: "Ciencias Básicas", creditos: [2, 2, 4], unidades: 4, link: "semestre2/AEC1058.html" },
+            { clave: "AEF1052", nombre: "Probabilidad y Estadística", semestre: 2, area: "Matemáticas", creditos: [3, 2, 5], unidades: 5, link: "semestre2/AEF1052.html" },
+
+            { clave: "AED1026", nombre: "Estructura de Datos", semestre: 3, area: "Programación", creditos: [2, 3, 5], unidades: 5, link: "semestre3/AED1026.html" },
+            { clave: "SCC1005", nombre: "Cultura Empresarial", semestre: 3, area: "Administración", creditos: [2, 2, 4], unidades: 4, link: "semestre3/SCC1005.html" },
+            { clave: "ACF0904", nombre: "Cálculo Vectorial", semestre: 3, area: "Matemáticas", creditos: [3, 2, 5], unidades: 5, link: "semestre3/ACF0904.html" },
+            { clave: "SCF1006", nombre: "Física General", semestre: 3, area: "Ciencias Básicas", creditos: [3, 2, 5], unidades: 5, link: "semestre3/SCF1006.html" },
+            { clave: "SCC1013", nombre: "Investigación de Operaciones", semestre: 3, area: "Matemáticas", creditos: [2, 2, 4], unidades: 4, link: "semestre3/SCC1013.html" },
+            { clave: "ACD0908", nombre: "Desarrollo Sustentable", semestre: 3, area: "Humanidades", creditos: [2, 3, 5], unidades: 4, link: "semestre3/ACD0908.html" },
+
+            { clave: "SCC1017", nombre: "Métodos Numéricos", semestre: 4, area: "Matemáticas", creditos: [2, 2, 4], unidades: 4, link: "semestre4/SCC1017.html" },
+            { clave: "SCD1027", nombre: "Tópicos Avanzados de Programación", semestre: 4, area: "Programación", creditos: [2, 3, 5], unidades: 5, link: "semestre4/SCD1027.html" },
+            { clave: "ACF0905", nombre: "Ecuaciones Diferenciales", semestre: 4, area: "Matemáticas", creditos: [3, 2, 5], unidades: 5, link: "semestre4/ACF0905.html" },
+            { clave: "AEF1031", nombre: "Fundamentos de Bases de Datos", semestre: 4, area: "Bases de Datos", creditos: [3, 2, 5], unidades: 5, link: "semestre4/AEF1031.html" },
+            { clave: "SCD1018", nombre: "Principios Eléctricos y Aplicaciones Digitales", semestre: 4, area: "Hardware", creditos: [2, 3, 5], unidades: 5, link: "semestre4/SCD1018.html" },
+            { clave: "SCD1022", nombre: "Simulación", semestre: 4, area: "Matemáticas", creditos: [2, 3, 5], unidades: 5, link: "semestre4/SCD1022.html" },
+
+            { clave: "SCC1010", nombre: "Graficación", semestre: 5, area: "Programación", creditos: [2, 2, 4], unidades: 4, link: "semestre5/SCC1010.html" },
+            { clave: "AEC1034", nombre: "Fundamentos de Telecomunicaciones", semestre: 5, area: "Redes", creditos: [2, 2, 4], unidades: 4, link: "semestre5/AEC1034.html" },
+            { clave: "AEC1061", nombre: "Sistemas Operativos", semestre: 5, area: "Sistemas", creditos: [2, 2, 4], unidades: 4, link: "semestre5/AEC1061.html" },
+            { clave: "SCA1025", nombre: "Taller de Bases de Datos", semestre: 5, area: "Bases de Datos", creditos: [0, 4, 4], unidades: 4, link: "semestre5/SCA1025.html" },
+            { clave: "SCC1007", nombre: "Fundamentos de Ingeniería de Software", semestre: 5, area: "Software", creditos: [2, 2, 4], unidades: 4, link: "semestre5/SCC1007.html" },
+            { clave: "SCD1003", nombre: "Arquitectura de Computadoras", semestre: 5, area: "Hardware", creditos: [2, 3, 5], unidades: 5, link: "semestre5/SCD1003.html" },
+
+            { clave: "SCD1015", nombre: "Lenguajes y Autómatas I", semestre: 6, area: "Programación", creditos: [2, 3, 5], unidades: 5, link: "semestre6/SCD1015.html" },
+            { clave: "SCD1021", nombre: "Redes de Computadoras", semestre: 6, area: "Redes", creditos: [2, 3, 5], unidades: 5, link: "semestre6/SCD1021.html" },
+            { clave: "SCB1001", nombre: "Administración de Bases de Datos", semestre: 6, area: "Bases de Datos", creditos: [1, 4, 5], unidades: 5, link: "semestre6/SCB1001.html" },
+            { clave: "SCD1011", nombre: "Ingeniería de Software", semestre: 6, area: "Software", creditos: [2, 3, 5], unidades: 5, link: "semestre6/SCD1011.html" },
+            { clave: "SCC1014", nombre: "Lenguajes de Interfaz", semestre: 6, area: "Programación", creditos: [2, 2, 4], unidades: 4, link: "semestre6/SCC1014.html" },
+            { clave: "SCA1026", nombre: "Taller de Sistemas Operativos", semestre: 6, area: "Sistemas", creditos: [0, 4, 4], unidades: 4, link: "semestre6/SCA1026.html" },
+
+            { clave: "SCD1016", nombre: "Lenguajes y Autómatas II", semestre: 7, area: "Programación", creditos: [2, 3, 5], unidades: 5, link: "semestre7/SCD1016.html" },
+            { clave: "SCD1004", nombre: "Conmutación y Enrutamiento en Redes de Datos", semestre: 7, area: "Redes", creditos: [2, 3, 5], unidades: 5, link: "semestre7/SCD1004.html" },
+            { clave: "ACA0909", nombre: "Taller de Investigación I", semestre: 7, area: "Investigación", creditos: [0, 4, 4], unidades: 4, link: "semestre7/ACA0909.html" },
+            { clave: "SCC1009", nombre: "Gestión de Proyectos de Software", semestre: 7, area: "Software", creditos: [2, 3, 5], unidades: 5, link: "semestre7/SCC1009.html" },
+            { clave: "SCD1023", nombre: "Sistemas Programables", semestre: 7, area: "Hardware", creditos: [2, 3, 5], unidades: 5, link: "semestre7/SCD1023.html" },
+
+            { clave: "SCC1019", nombre: "Programación Lógica y Funcional", semestre: 8, area: "Programación", creditos: [2, 2, 4], unidades: 4, link: "semestre8/SCC1019.html" },
+            { clave: "SCA1002", nombre: "Administración de Redes", semestre: 8, area: "Redes", creditos: [0, 4, 4], unidades: 4, link: "semestre8/SCA1002.html" },
+            { clave: "ACA0910", nombre: "Taller de Investigación II", semestre: 8, area: "Investigación", creditos: [0, 4, 4], unidades: 4, link: "semestre8/ACA0910.html" },
+            { clave: "AEB1055", nombre: "Programación Web", semestre: 8, area: "Programación", creditos: [1, 4, 5], unidades: 5, link: "semestre8/AEB1055.html" },
+
+            { clave: "SCC1012", nombre: "Inteligencia Artificial", semestre: 9, area: "Programación", creditos: [2, 2, 4], unidades: 4, link: "semestre9/SCC1012.html" },
+        ];
+
+        // Estado de filtros
+        let filtrosActivos = {
+            semestre: 'todos',
+            area: 'todos',
+            busqueda: ''
+        };
+
+        // Función para obtener color de área
+        function getAreaClass(area) {
+            const areaMap = {
+                'Programación': 'area-programacion',
+                'Redes': 'area-redes',
+                'Matemáticas': 'area-matematicas',
+                'Bases de Datos': 'area-bases-datos',
+                'Software': 'area-software'
+            };
+            return areaMap[area] || 'area-otros';
+        }
+
+        // Función para crear tarjeta de curso
+        function crearCursoCard(curso) {
+            return `
+        <a href="${curso.link}" class="course-card block">
+            <div class="p-6">
+                <div class="flex items-start justify-between mb-3">
+                    <span class="area-badge ${getAreaClass(curso.area)}">${curso.area}</span>
+                    <span class="text-xs font-bold text-gray-500">Sem. ${curso.semestre}</span>
+                </div>
+                <h3 class="text-lg font-bold text-[var(--secondary-color)] mb-2 line-clamp-2 min-h-[3.5rem]">${curso.nombre}</h3>
+                <p class="text-sm text-gray-600 mb-4">Clave: ${curso.clave}</p>
+                <div class="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-200">
+                    <div class="flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                        <span>${curso.unidades} unidades</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>${curso.creditos[2]} créditos</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    `;
+        }
+
+        // Función para filtrar cursos
+        function filtrarCursos() {
+            let cursosFiltrados = cursosCompletos;
+
+            // Filtrar por semestre
+            if (filtrosActivos.semestre !== 'todos') {
+                cursosFiltrados = cursosFiltrados.filter(c => c.semestre === parseInt(filtrosActivos.semestre));
+            }
+
+            // Filtrar por área
+            if (filtrosActivos.area !== 'todos') {
+                cursosFiltrados = cursosFiltrados.filter(c => c.area === filtrosActivos.area);
+            }
+
+            // Filtrar por búsqueda
+            if (filtrosActivos.busqueda) {
+                const termino = filtrosActivos.busqueda.toLowerCase();
+                cursosFiltrados = cursosFiltrados.filter(c =>
+                    c.nombre.toLowerCase().includes(termino) ||
+                    c.clave.toLowerCase().includes(termino)
+                );
+            }
+
+            return cursosFiltrados;
+        }
+
+        // Función para renderizar cursos
+        function renderizarCursos() {
+            const grid = document.getElementById('coursesGrid');
+            const noResults = document.getElementById('noResults');
+            const resultsCount = document.getElementById('resultsCount');
+
+            const cursosFiltrados = filtrarCursos();
+
+            if (cursosFiltrados.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                resultsCount.textContent = 'No se encontraron cursos';
+            } else {
+                noResults.classList.add('hidden');
+                grid.innerHTML = cursosFiltrados.map(curso => crearCursoCard(curso)).join('');
+                resultsCount.textContent = `Mostrando ${cursosFiltrados.length} curso${cursosFiltrados.length !== 1 ? 's' : ''}`;
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Renderizar cursos iniciales
+            renderizarCursos();
+
+            // Filtros de botones
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const filterType = e.target.dataset.filter;
+                    const filterValue = e.target.dataset.value;
+
+                    // Actualizar estado activo
+                    document.querySelectorAll(`[data-filter="${filterType}"]`).forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    // Actualizar filtros
+                    filtrosActivos[filterType] = filterValue;
+                    renderizarCursos();
+                });
+            });
+
+            // Búsqueda
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                filtrosActivos.busqueda = e.target.value;
+                renderizarCursos();
+            });
+
+            // Limpiar filtros
+            document.getElementById('clearFilters').addEventListener('click', () => {
+                filtrosActivos = { semestre: 'todos', area: 'todos', busqueda: '' };
+                searchInput.value = '';
+                document.querySelectorAll('[data-filter]').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('[data-value="todos"]').forEach(btn => btn.classList.add('active'));
+                renderizarCursos();
+            });
+        });
+    </script>
+</body>
+
+</html>
