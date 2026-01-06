@@ -7,8 +7,8 @@
     'use strict';
 
     function initMenu() {
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+        const menuBtn = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
         const menuIconOpen = document.getElementById('menu-icon-open');
         const menuIconClose = document.getElementById('menu-icon-close');
 
@@ -28,8 +28,8 @@
                 mobileMenu.offsetHeight;
                 mobileMenu.classList.remove('translate-x-full');
 
-                menuIconOpen.classList.toggle('hidden');
-                menuIconClose.classList.toggle('hidden');
+                menuIconOpen.classList.add('hidden');
+                menuIconClose.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
             } else {
                 // Cerrar menú con transición
@@ -39,8 +39,8 @@
                     mobileMenu.classList.add('hidden');
                 }, 300);
 
-                menuIconOpen.classList.toggle('hidden');
-                menuIconClose.classList.toggle('hidden');
+                menuIconOpen.classList.remove('hidden');
+                menuIconClose.classList.add('hidden');
                 document.body.style.overflow = '';
             }
         };
